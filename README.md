@@ -30,7 +30,9 @@ Users will be able to view a bubble map, with each circle representing an indivi
 
 ## Wireframes
 
-![Wireframe](https://github.com/gardenFiend138/venom-data-visualization-wireframes/blob/master/venom-data-wireframes.jpg)
+![Wireframe](https://github.com/gardenFiend138/venom-data-visualization-wireframes/blob/master/VenomDataSplash.jpg)
+![Wireframe](https://github.com/gardenFiend138/venom-data-visualization-wireframes/blob/master/VenomDataMainVisualization.jpg)
+![Wireframe](https://github.com/gardenFiend138/venom-data-visualization-wireframes/blob/master/VenomDataHoverEffect.jpg)
 
 ## Architecture and Technologies
 
@@ -56,13 +58,13 @@ I will be using data taken form snakedatabase.org; the database is not downloada
 
 #### Day 2
 * Finish cleaning up data in CSV file (scientific and common names are separated by a new line--split into two separate columns).
-* Add LD-50 data to the graph in the form of cirles that correlate inversely to the toxicity of the venom (larger circles will have a lower LD-50).
+* Add LD-50 data to the graph in the form of circles that correlate inversely to the toxicity of the venom (larger circles will have a lower LD-50).
 * Render X and Y axis with venom yield and maximum fang length.
 * Research D3 transition implementations.
 
 #### Day 3 
 * Work on styling the overall layout of the main visualization page.
-* Research tooltip implementation for hover effect.
+* Research expanding bubble implementation for hover effect.
 * Sort data based on fang length and venom yield.
 * Begin styling splash page with background information on the data.
 
