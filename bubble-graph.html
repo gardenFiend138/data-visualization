@@ -3,7 +3,8 @@
   <head>
     <meta charset="utf-8">
     <title>Venom LD-50 Visualization</title>
-    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <!-- using version 3 of d3 -->
+    <script src="https://d3js.org/d3.v3.min.js"></script>
     </script>
     <svg></svg>
 
@@ -11,31 +12,82 @@
   <body>
 
     <script type="text/javascript">
-      
-      d3.csv('editedVenomLD50.csv', function(data) {
-
-        let graph = d3.select('body').append('svg')
-          .attr('width', 10000)
-          .attr('height', 10000)
-          
-        graph.selectAll('rect')
-             .data(data)
-             .enter()
-             .append('rect')
-             .attr('width', function (d) { return d.LD50 * 100 })
-             .attr('height', 18)
-             .attr('y', function(d, i) { return i * 50 })
-             .attr('fill', 'green');
-             
-        graph.selectAll('text')
-             .data(data)
-             .enter()
-             .append('text')
-             .attr('fill', 'black')
-             .attr('y', function (d, i) { return i * 50 + 15 })
-             .text( function(d) { return d.Species });
     
-    });
+    let svg = d3.select('body').append('svg')
+      .attr('width', 1000)
+      .attr('height', 500)
+      
+    let xScale = d3.scale.linear().range([0, 900])
+    let yScale = d3.scale.linear().range([450, 0]) // invert so it reads like a normal graph
+    let rScale = d3.scale.linear().range([.01, 1.0])
+    // using extent here to calculate min and max of the dataset
+    function render(data) {
+      xScale.domain(d3.extent(data, function(d) { return d.fangsMM; }));
+      yScale.domain(d3.extent(data, function(d) { return d.venomYieldDryMG; }));
+      rScale.domain(d3.extent(data, function(d) { return d.ld50IV; }));
+
+
+      
+    let circles = svg.selectAll('circle').data(data);
+    
+    circles.enter().append('circle');
+    circles 
+      .attr('cx', function(d) { return xScale(d.fangsMM); })
+      .attr('cy', function(d) { return yScale(d.venomYieldDryMG); })
+      .attr('r', function(d) { return rScale(d.ld50IV * 30); })
+      .style('fill', 'none')
+      .style('stroke', 'black');
+      
+      
+    //not needed in this visualization, since I'm using static data,
+    // but putting in here so that I remember to use it when pulling from 
+    // web APIs in the future
+    circles.exit().remove();
+    }
+      
+    // set measurements as numbers instead of strings 
+    function type(d) {
+      d.lengthCM = +d.lengthCM
+      d.weightG = +d.weightG
+      d.fangsMM = +d.fangsMM
+      d.venomYieldDryMG = +d.venomYieldDryMG
+      d.ld50IV = +d.ld50IV
+      return d;
+    }
+    d3.csv('venomData.csv', type, render);
+    // get the minimum and maximum values of ld50 column; used for circle size
+    // look into d3.extent (only iterates over array once)
+    // d3.csv('venomData.csv', type, function(data) {
+    //   let min = d3.min(data, function (d) { return d.ld50IV; })
+    //   let max = d3.max(data, function (d) { return d.ld50IV; })
+    //   console.log([min, max])
+    // })
+    
+      
+    //   d3.csv('venomData.csv', function(data) {
+    // 
+    //     let graph = d3.select('body').append('svg')
+    //       .attr('width', 10000)
+    //       .attr('height', 10000)
+    // 
+    //     graph.selectAll('rect')
+    //          .data(data)
+    //          .enter()
+    //          .append('rect')
+    //          .attr('width', function(d) { return +d.ld50IV * 100 })
+    //          .attr('height', 18)
+    //          .attr('y', function(d, i) { return i * 50 })
+    //          .attr('fill', 'green');
+    // 
+    //     graph.selectAll('text')
+    //          .data(data)
+    //          .enter()
+    //          .append('text')
+    //          .attr('fill', 'black')
+    //          .attr('y', function (d, i) { return i * 50 + 15 })
+    //          .text( function(d) { return d.species });
+    // 
+    // });
     </script>
   </body>
 </html>

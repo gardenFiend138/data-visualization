@@ -1,0 +1,35 @@
+species,commonName,lengthCM,weightG,fangsMM,venomYieldDryMG,ld50IV
+Crotalus atrox,Western diamondback rattlesnake,230,1000,16,1145,0.92
+Lachesis muta,Atlantic bushmaster,360,5000,35,411,0.9
+Dendroaspis jamesoni,Jameson's mamba,255,,8,120,0.84
+Agkistrodon bilineatus,Mexican cantil,138,51.1,12,688,0.8
+Dendroaspis viridis,Western green mamba,250,,6.7,100,0.667
+Bitis gabonica,Central African gaboon viper,200,11300,55,2400,0.55
+Naja pallida,Red spitting cobra,153.5,,4.9,260,0.49
+Vipera berus,Common European adder,90,,4,18,0.41
+Bitis arietans,Puff adder,190.5,6000,30,750,0.389
+Dendroaspis angusticeps,Eastern green mamba,250,282.4,7.7,60,0.381
+Naja nivea,Cape cobra,185,,6,150,0.371
+Naja haje,Egyptian cobra,300,,10,300,0.287
+Naja oxiana,Caspian cobra,190,,5.62,590,0.272
+Rhabdophis tigrinus,Tiger keelback,130,189.3,2.3,20.5,0.265
+Dendroaspis polylepis,Black mamba,430,1600,7.9,400,0.264
+Pseudechis australis,Mulga snake,330,6000,6.5,1500,0.23
+Micrurus fulvius,Eastern coral snake,129.5,,2.7,5,0.2
+Hydrophis stokesii,Large headed Sea Snake,200,,7,150,0.164
+Oxyuranus scutellatus,Coastal taipan,366,6500,12.1,882,0.155
+Aipysurus laevis,Olive brown sea snake,230,3000,5,71,0.15
+Naja naja,Spectacled cobra,220,1497.5,7.33,610,0.13
+Ophiophagus hannah,King cobra,585,12700,15,500,0.125
+Hydrophis elegans,Elegant sea snake,250,2450,3.9,24,0.12
+Naja kaouthia,Monocled cobra,230,,6.78,742,0.115
+Naja melanoleuca,Forest cobra,320,,3.5,1102,0.093
+Hydrophis platurus,Yellowbelly sea snake,133,,1.5,4.4,0.09
+Naja siamensis,Indochinese spitting cobra,160,,4.7,738,0.075
+Dispholidus typus,Boomslang,200,510,5.2,8,0.067
+Atractaspis engaddensis,Palestinian Mole Viper,100,57.5,4,9.6,0.06
+Notechis scutatus,Mainland tiger snake,290,1700,5.5,636,0.04
+Bungarus caeruleus,Indian krait,180,,3,30,0.04
+Daboia russelii ,Russell's viper,180,675,13,240,0.035
+Naja nigricollis,Black necked spitting cobra,280,256.7,5.8,200,0.03
+Crotalus scutulatus,Mohave rattlesnake,130,,8.8,150,0.03
