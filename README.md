@@ -13,7 +13,6 @@ These data visualizations re represented by a bubble chart, and will correlate:
 
 ## Functionality and MVP
 Users will be able to view a bubble map, with each circle representing an individual species of snake. Due to limitations in datasets available, there will be 23 species represented. While this is a limitation, it will allow me to easily add more detailed information if time permits with my bonus features.
-
 * The common name will be in the center of the circle 
 * The circle size will correlate to the LD-50 of the venom 
 * The X-axis will correlate to the venom yield (weight of dried venom in mg))
@@ -33,7 +32,6 @@ Users will be able to view a bubble map, with each circle representing an indivi
 ![Wireframe](https://github.com/gardenFiend138/venom-data-visualization-wireframes/blob/master/VenomDataSplash.jpg)
 ![Wireframe](https://github.com/gardenFiend138/venom-data-visualization-wireframes/blob/master/VenomDataMainVisualization.jpg)
 ![Wireframe](https://github.com/gardenFiend138/venom-data-visualization-wireframes/blob/master/VenomDataHoverEffect.jpg)
-
 ## Architecture and Technologies
 
 For this data visualization, I will be using:
@@ -42,7 +40,7 @@ For this data visualization, I will be using:
   * Use HTML SVG elements for rendering the data visualization 
   * NPM live-server as the local server
   
-I will be using data taken form snakedatabase.org; the database is not downloadable, so I will save it has HTML and use an HTML to CSV converter so I save the data as a csv file within my project. 
+I will be using data taken from snakedatabase.org; the database is not downloadable, so I will save it has HTML and use an HTML to CSV converter so I save the data as a csv file within my project. 
 
 ## Implementation Timeline
 
@@ -55,7 +53,6 @@ I will be using data taken form snakedatabase.org; the database is not downloada
 * Continue to research and become more familiar with D3.
 * Decide how to deal with data once in CSV file format (the HTML to CSV converter left some extraneous information).
 * Get basic bar graph to render using LD-50 of venoms.
-
 #### Day 2
 * Finish cleaning up data in CSV file (scientific and common names are separated by a new line--split into two separate columns).
 * Add LD-50 data to the graph in the form of circles that correlate inversely to the toxicity of the venom (larger circles will have a lower LD-50).
@@ -75,4 +72,3 @@ I will be using data taken form snakedatabase.org; the database is not downloada
 #### Day 5
 * Wrap up loose ends, make sure transitions are smooth and UI is intuitive and responsive.
 * If time, work on bonus features, with the first being a pulsating effect on the circle if the animal's venom is being researched for medical use.
-
