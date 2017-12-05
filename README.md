@@ -1,14 +1,14 @@
-#Snake Venom Analysis
+# Snake Venom Analysis
 
 ## Background and Overview
-I have always been fascinated by reptiles; in addition to keeping and breeding snakes, I have attended international symposiums dedicated to furthering the study of reptiles, and over the past few years have taken an interest in the emerging medical research concerning the use of venom in medicine, particularly in pain management and cancer treatments. 
+I have always been fascinated by reptiles; in addition to keeping and breeding snakes, I have attended international symposiums dedicated to furthering the study of reptiles, and over the past few years have taken an interest in the emerging medical research concerning the use of venom in medicine, particularly in pain management and cancer treatments. While not every species' venom is being researched for use in medicine, the fact remains that there is a justifiably negative stigma regarding venomous animals. Despite the inherent danger presented by these animals, we are just beginning to scratch the surface of the the ways in which their complex toxins may benefit us. At the same time, many of these animals are facing threats due to habitat loss--if we lose these animals, we may never realize the potential their toxins might have for positively impacting modern medicine. 
 
 These data visualizations re represented by a bubble chart, and will correlate:
 * LD-50 of venoms (measured in mg/kg; amount of venom required to to be fatal to 50% of test population)
 * Venom Yield
+* Fang size
 * Snake weight
 * Snake length
-* Fang size
 
 
 ## Functionality and MVP
