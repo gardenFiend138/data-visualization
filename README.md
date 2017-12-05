@@ -12,7 +12,8 @@ These data visualizations re represented by a bubble chart, and will correlate:
 
 
 ## Functionality and MVP
-Users will be able to view a bubble map, with each circle representing an individual species of snake. 
+Users will be able to view a bubble map, with each circle representing an individual species of snake. Due to limitations in datasets available, there will be 23 species represented. While this is a limitation, it will allow me to easily add more detailed information if time permits with my bonus features.
+
 * The common name will be in the center of the circle 
 * The circle size will correlate to the LD-50 of the venom 
 * The X-axis will correlate to the venom yield (weight of dried venom in mg))
@@ -25,6 +26,7 @@ Users will be able to view a bubble map, with each circle representing an indivi
 
 ### Bonus features
 * Circles will slowly pulsate if the animal's venom is being researched for medical use.
+* Incorporate other data from VenomKB database (JSON) to grab an image URL of each animal.
 
 ## Wireframes
 
