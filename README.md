@@ -1,29 +1,30 @@
-# Venom Analysis: LD50, Invenomation Effects, & Uses in Medicine
+#Snake Venom Analysis
 
 ## Background and Overview
 I have always been fascinated by reptiles; in addition to keeping and breeding snakes, I have attended international symposiums dedicated to furthering the study of reptiles, and over the past few years have taken an interest in the emerging medical research concerning the use of venom in medicine, particularly in pain management and cancer treatments. 
 
 These data visualizations re represented by a bubble chart, and will correlate:
-* LD-50 of venoms
-* Uses in Medicine 
-* Classification of venom type 
-  * Mytotoxin
-  * Neurotoxin
-  * Hemotoxin
-  * Necrotoxin
-  * Cytotoxin
-* Effects of Envenomation 
-* Bites/ deaths per year 
-* Proteins Present 
+* LD-50 of venoms (measured in mg/kg; amount of venom required to to be fatal to 50% of test population)
+* Venom Yield
+* Snake weight
+* Snake length
+* Fang size
 
 
 ## Functionality and MVP
-Users will be able to view a bubble map, with each circle representing an individual venomous species. 
+Users will be able to view a bubble map, with each circle representing an individual species of snake. 
+* The common name will be in the center of the circle 
 * The circle size will correlate to the LD-50 of the venom 
-* The color of each circle will be determined by the classification of the venom type. 
-* Users will be able to hover over each circle, and it will expand to reveal more information about each species, including: scientific and common names, the effects of envenomation, and bites/ deaths per year. 
-* If the venom is being researched for medical use, the circle will ___________ .
-* Users will also be able to filter through the data based on type of animal (snake, lizard, insect, arachnid, others) with the click of a button above the graph
+* The X-axis will correlate to the venom yield (weight of dried venom in mg))
+* The Y-axis will correlate to the maximum fang length
+* Users will be able to hover over each circle, making the circle expand, and see additional information, including:
+  * Scientific name
+  * Snake weight
+  * Snake length
+* Users will be met with a splash page that will give an overview of what data the graph depicts and why it's important
+
+### Bonus features
+* Circles will slowly pulsate if the animal's venom is being researched for medical use.
 
 ## Wireframes
 
@@ -33,12 +34,11 @@ Users will be able to view a bubble map, with each circle representing an indivi
 
 For this data visualization, I will be using:
   * JavaScript for the overall graph structure and logic
-  * The D3 library, which will will allow me to add transitions to the graph interactions 
-  * HTML5 Canvas for rendering 
-  * Webpack for bundling
+  * The D3 library, which will will allow me to parse the csv data and add transitions to the graph interactions 
+  * Use HTML SVG elements for rendering the data visualization 
+  * NPM live-server as the local server
   
-I will be using data from the VenomKB API, and will be receiving data as JSON, but will also rely on data from various other sources which do not have APIs. For these sources, I will make a CSV file and manually transport the required data. 
-
+I will be using data taken form snakedatabase.org; the database is not downloadable, so I will save it has HTML and use an HTML to CSV converter so I save the data as a csv file within my project. 
 
 ## Implementation Timeline
 
@@ -47,33 +47,28 @@ I will be using data from the VenomKB API, and will be receiving data as JSON, b
 * Research the D3 library, check out docs, watch introduction and overview videos
 
 #### Day 1
-* Get D3 setup and running
-* Continue to research and become more familiar with D3
-* Get basic backend written and running
-* Decide how to parse data receive from API, and how to deal with data that needs to be input manually (uses in medicine, venom classification)
-* Make API requests to VenomKB
-* Style basic layout
+* Get D3 setup and running.
+* Continue to research and become more familiar with D3.
+* Decide how to deal with data once in CSV file format (the HTML to CSV converter left some extraneous information).
+* Get basic bar graph to render using LD-50 of venoms.
 
 #### Day 2
-* Use json returned to make basic bubble graph rendering each species by scientific name 
-* Add LD-50 data to the graph (circle size)
-* Finish styling for basic layout
+* Finish cleaning up data in CSV file (scientific and common names are separated by a new line--split into two separate columns).
+* Add LD-50 data to the graph in the form of cirles that correlate inversely to the toxicity of the venom (larger circles will have a lower LD-50).
+* Render X and Y axis with venom yield and maximum fang length.
+* Research D3 transition implementations.
 
 #### Day 3 
-* Add venom type to the graph (color)
-* Add uses in medicine 
-* Work on styling
+* Work on styling the overall layout of the main visualization page.
+* Research tooltip implementation for hover effect.
+* Sort data based on fang length and venom yield.
+* Begin styling splash page with background information on the data.
 
 #### Day 4
-* Add buttons at top of canvas to filter based on type of animal 
-* Finish styling
-* Finish adding Effects of envenomation, bites/ deaths per year, and proteins
+* Finish splash page styling and information.
+* Implement hover effect of circle expanding to reveal more information about the snake.
 
 #### Day 5
-* Wrap up loose ends, make sure transitions are smooth and UI is intuitive and responsive
-
-
-notes 
-dont use array use hashes
-
+* Wrap up loose ends, make sure transitions are smooth and UI is intuitive and responsive.
+* If time, work on bonus features, with the first being a pulsating effect on the circle if the animal's venom is being researched for medical use.
 
