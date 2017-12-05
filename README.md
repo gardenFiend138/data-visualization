@@ -72,3 +72,8 @@ I will be using data from the VenomKB API, and will be receiving data as JSON, b
 #### Day 5
 * Wrap up loose ends, make sure transitions are smooth and UI is intuitive and responsive
 
+
+notes 
+dont use array use hashes
+
+
