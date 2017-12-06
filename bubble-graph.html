@@ -2,10 +2,11 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Venom LD-50 Visualization</title>
+    <link rel='stylesheet' type='text/css' href='./venomStyle.scss'></link>
     <!-- using version 3 of d3 -->
     <script src="https://d3js.org/d3.v3.min.js"></script>
-    </script>
+    <title>Venom LD-50 Visualization</title>
+    
     <svg></svg>
 
   </head>
@@ -13,18 +14,34 @@
 
     <script type="text/javascript">
     
+    // dimensions of the svg viewport
     let svg = d3.select('body').append('svg')
       .attr('width', 1000)
       .attr('height', 500)
-      
-    let xScale = d3.scale.linear().range([0, 900])
-    let yScale = d3.scale.linear().range([450, 0]) // invert so it reads like a normal graph
-    let rScale = d3.scale.linear().range([.01, 1.0])
-    // using extent here to calculate min and max of the dataset
+      // .style('padding', 100)
+    
+    // using d3 scales allows us to keep our svg viewport within the browser window and scales our data to fit within the space
+    // can be done manually with vanilla javascript, but it's not difficult math and is time consuming for a project with such a short timeline
+    // the domain is set directly form the minimum and maximum values of the data
+    // this is handlign the math behind normalizing the data for scaling purposes
+    const xScale = d3.scale.linear().domain([0, 16]).range([0, 1000]);
+    const yScale = d3.scale.linear().domain([0, 1000]).range([500, 0]); // invert values so it reads like a normal graph
+    
+    // with the radius, we invert the range so we have an inverse relationship between the ld50 of the venom and the radius of the circle
+    const rScale = d3.scale.sqrt().domain([.01, 1.0]).range([100, 1]);
+    
+    const xAxis = d3.svg.axis().orient('bottom').scale(xScale);
+    const yAxis = d3.svg.axis().orient('left').scale(yScale);
+    
+    const zAxisGroup = svg.append('g').call(xAxis);
+    const yAxisGroup = svg.append('g').call(yAxis);
+    // const data = d3.csv('venomData.csv');
     function render(data) {
-      xScale.domain(d3.extent(data, function(d) { return d.fangsMM; }));
-      yScale.domain(d3.extent(data, function(d) { return d.venomYieldDryMG; }));
-      rScale.domain(d3.extent(data, function(d) { return d.ld50IV; }));
+      // using extent here to calculate min and max of the dataset
+      // not needed due to defining the x, y, and r scales above
+      // xScale.domain(d3.extent(data, function(d) { return d.fangsMM; }));
+      // yScale.domain(d3.extent(data, function(d) { return d.venomYieldDryMG; }));
+      // rScale.domain(d3.extent(data, function(d) { return d.ld50IV; }));
 
 
       
@@ -34,10 +51,24 @@
     circles 
       .attr('cx', function(d) { return xScale(d.fangsMM); })
       .attr('cy', function(d) { return yScale(d.venomYieldDryMG); })
-      .attr('r', function(d) { return rScale(d.ld50IV * 30); })
-      .style('fill', 'none')
-      .style('stroke', 'black');
+      .attr('r', function(d) { return rScale(d.ld50IV); })
+      .style('fill', 'blue')
+      .style('opacity', .2)
+      .style('stroke', 'black')
+      .style('stroke-width', .3);
       
+      
+      let graph = svg.selectAll('text').data('text')
+      
+      graph.data(data)
+           .enter()
+           .append('text')
+           .attr('fill', 'black')
+           .attr('y', function (d, i) { return i * 50 + 15 })
+           .text( function(d) { return d.species });
+
+  
+  
       
     //not needed in this visualization, since I'm using static data,
     // but putting in here so that I remember to use it when pulling from 
@@ -52,6 +83,7 @@
       d.fangsMM = +d.fangsMM
       d.venomYieldDryMG = +d.venomYieldDryMG
       d.ld50IV = +d.ld50IV
+      
       return d;
     }
     d3.csv('venomData.csv', type, render);

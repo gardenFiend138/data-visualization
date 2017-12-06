@@ -53,6 +53,7 @@ I will be using data taken from snakedatabase.org; the database is not downloada
 * Continue to research and become more familiar with D3.
 * Decide how to deal with data once in CSV file format (the HTML to CSV converter left some extraneous information).
 * Get basic bar graph to render using LD-50 of venoms.
+
 #### Day 2
 * Finish cleaning up data in CSV file (scientific and common names are separated by a new line--split into two separate columns).
 * Add LD-50 data to the graph in the form of circles that correlate inversely to the toxicity of the venom (larger circles will have a lower LD-50).
