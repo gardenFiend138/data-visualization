@@ -6,36 +6,68 @@
     <!-- using version 3 of d3 -->
     <script src="https://d3js.org/d3.v3.min.js"></script>
     <title>Venom LD-50 Visualization</title>
-    
-    <svg></svg>
 
   </head>
   <body>
 
     <script type="text/javascript">
+    const margin = {top: 50,right: 100,bottom: 50, left: 100}
+    const outerWidth = 1300;
+    const outerHeight = 600;
+    const innerWidth =  outerWidth - margin.right - margin.left;
+    const innerHeight = outerHeight - margin.top - margin.bottom;
+    const padding = margin;
     
     // dimensions of the svg viewport
     let svg = d3.select('body').append('svg')
-      .attr('width', 1000)
-      .attr('height', 500)
-      // .style('padding', 100)
+      .attr('width', outerWidth)
+      .attr('height', outerHeight)
+      .style('padding', padding.right + padding.top)
+      
+    let g = svg.append('g')
+    // .style('padding', padding.right + padding.top)
+      .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
     
     // using d3 scales allows us to keep our svg viewport within the browser window and scales our data to fit within the space
     // can be done manually with vanilla javascript, but it's not difficult math and is time consuming for a project with such a short timeline
     // the domain is set directly form the minimum and maximum values of the data
     // this is handlign the math behind normalizing the data for scaling purposes
-    const xScale = d3.scale.linear().domain([0, 16]).range([0, 1000]);
-    const yScale = d3.scale.linear().domain([0, 1000]).range([500, 0]); // invert values so it reads like a normal graph
+    const xScale = d3.scale
+      .linear()
+      .domain([0, 16])
+      .range([0, 1000]);
+      
+    const yScale = d3.scale
+      .linear()
+      .domain([0, 1000])
+      .range([500, 0]); // invert values so it reads like a normal graph
     
     // with the radius, we invert the range so we have an inverse relationship between the ld50 of the venom and the radius of the circle
-    const rScale = d3.scale.sqrt().domain([.01, 1.0]).range([100, 1]);
+    const rScale = d3.scale
+      .sqrt()
+      .domain([.01, 1.0])
+      .range([100, 1]);
     
-    const xAxis = d3.svg.axis().orient('bottom').scale(xScale);
-    const yAxis = d3.svg.axis().orient('left').scale(yScale);
+    // orient isn't working properly right now; possibly have to translate 
+    // svg element, since it's rotating orientation based on upper left corner (0,0); actually, just translate the 'g' element defined below
+    const xAxis = d3.svg
+      .axis()
+      .orient('bottom')
+      .scale(xScale);
+      
+    const yAxis = d3.svg
+      .axis()
+      .orient('left')
+      .scale(yScale);
     
-    const zAxisGroup = svg.append('g').call(xAxis);
-    const yAxisGroup = svg.append('g').call(yAxis);
-    // const data = d3.csv('venomData.csv');
+    const xAxisGroup = g.append('g')
+      // .call(xAxis)
+      .attr('transform', 'translate(0' + ',' + innerHeight + ')');
+      
+    const yAxisGroup = g.append('g')
+      // .call(yAxis)
+      // .attr('transform', 'translate(' + margin.top + ', 0)');
+      // 
     function render(data) {
       // using extent here to calculate min and max of the dataset
       // not needed due to defining the x, y, and r scales above
@@ -43,17 +75,18 @@
       // yScale.domain(d3.extent(data, function(d) { return d.venomYieldDryMG; }));
       // rScale.domain(d3.extent(data, function(d) { return d.ld50IV; }));
 
-
+    xAxisGroup.call(xAxis);
+    yAxisGroup.call(yAxis);
       
-    let circles = svg.selectAll('circle').data(data);
-    
+    let circles = g.selectAll('circle').data(data);
+    const ld50Radius = function(d) { return rScale(d.ld50IV); }
     circles.enter().append('circle');
     circles 
       .attr('cx', function(d) { return xScale(d.fangsMM); })
       .attr('cy', function(d) { return yScale(d.venomYieldDryMG); })
-      .attr('r', function(d) { return rScale(d.ld50IV); })
+      .attr('r', 5)
       .style('fill', 'blue')
-      .style('opacity', .2)
+      .style('opacity', .4)
       .style('stroke', 'black')
       .style('stroke-width', .3);
       
@@ -65,7 +98,7 @@
            .append('text')
            .attr('fill', 'black')
            .attr('y', function (d, i) { return i * 50 + 15 })
-           .text( function(d) { return d.species });
+           // .text( function(d) { return d.species });
 
   
   
