@@ -2,27 +2,34 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <link rel='stylesheet' type='text/css' href='./venomStyle.scss'></link>
+    <link rel='stylesheet' type='text/css' href='venomStyle.css'></link>
     <!-- using version 3 of d3 -->
     <script src="https://d3js.org/d3.v3.min.js"></script>
     <title>Venom LD-50 Visualization</title>
 
   </head>
   <body>
-    <button id='graph'>Graph it</button>
-    <button id='converge'>Where's the data converge?</button>
-    <button id='force-graph'>BUBBLES!</button>
+    <div class='button-container'>
+      <button id='graph'>Graph it</button>
+      <button id='converge'>Where's the data converge?</button>
+      <button id='force-graph'>BUBBLES!</button>
+    </div>
+    <div class='instructions'>
+      <img src="http://i.imgur.com/aCJQYUS.png" alt="snake-comic">
+      <span>This is the instruction page div</span>
+    </div>
     
     <script type="text/javascript">
     
 
     
-    const margin = {top: 50,right: 100,bottom: 50, left: 100}
-    const outerWidth = 1300;
-    const outerHeight = 600;
+    const margin = {top: 25,right: 100,bottom: 25, left: 100}
+    const outerWidth = 1000;
+    const outerHeight = 500;
     const innerWidth =  outerWidth - margin.right - margin.left;
-    const innerHeight = outerHeight - margin.top - margin.bottom;
+    const innerHeight = outerHeight - margin.top - margin.bottom - 20;
     const padding = margin;
+    
     
     // dimensions of the svg viewport
     let svg = d3.select('body').append('svg')
@@ -33,7 +40,10 @@
     let g = svg.append('g')
       .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
       
-
+    // const resetGElements = () => {
+    //   svg.append('g')
+    //     .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+    // }
     
     // using d3 scales allows us to keep our svg viewport within the browser window and scales our data to fit within the space
     // can be done manually with vanilla javascript, but it's not difficult math and is time consuming for a project with such a short timeline
@@ -41,13 +51,14 @@
     // this is handlign the math behind normalizing the data for scaling purposes
     const xScale = d3.scale
       .linear()
-      .domain([-2, 14])
+      .domain([0, 14])
       .range([0, 1000]);
       
     const yScale = d3.scale
       .linear()
-      .domain([-100, 1200])
+      .domain([1, 1200])
       .range([500, 0]); // invert values so it reads like a normal graph
+      
     
     // with the radius, we invert the range so we have an inverse relationship between the ld50 of the venom and the radius of the circle
     const rScale = d3.scale
@@ -66,9 +77,12 @@
       .scale(yScale);
     
     const xAxisGroup = g.append('g')
-      .attr('transform', 'translate(0' + ',' + innerHeight + ')');
+      .attr('id', 'axis')
+      .attr('transform', 'translate(0' + ',' + outerHeight + ')');
       
-    const yAxisGroup = g.append('g')
+    const yAxisGroup = g.append('g').attr('id', 'axis')
+    
+    
 
       
       
@@ -82,7 +96,7 @@
       nodes: [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}]
     }
     
-    const circle = svg.selectAll()
+    const circle = g.selectAll()
       .data(graph.nodes)
       .enter()
       .append('circle')
@@ -122,24 +136,31 @@ console.log(data)
       };
       
       const growCircles = () => {
-        // xAxisGroup.call(xAxis);
-        // yAxisGroup.call(yAxis);
+        // resetGElements();
+        xAxisGroup.call(xAxis);
+        yAxisGroup.call(yAxis);
         circles.attr('r', ld50Radius)
           .attr('cx', function(d) { return xScale(d.fangsMM); })
           .attr('cy', function(d) { return yScale(d.venomYieldDryMG); })
       };
       
       const circleData = () => {
-        circles.attr('r', ld50Radius * 5)
+        circles.attr('r', ld50Radius)
       }
       
       const graphIt = (data) => {
+        console.log(data)
+        // resetGElements();
         xAxisGroup.call(xAxis);
         yAxisGroup.call(yAxis);
+        plotCircles();
+      }
+      
+      const plotCircles = () => {
         circles 
           .attr('cx', function(d) { return xScale(d.fangsMM); })
           .attr('cy', function(d) { return yScale(d.venomYieldDryMG); })
-          .attr('r', 5)
+          .attr('r', 10)
       }
       
 
@@ -161,9 +182,10 @@ console.log(data)
 
      const force = d3.layout.force()
                .nodes(nodes)
-               .charge(-600)
-               .alpha(.05)
-               .size([innerHeight, innerWidth])
+               .charge(-375)
+               .friction(.9)
+               .alpha(.5)
+               .size([innerHeight * 2, innerWidth / 2])
                .on('tick', ticked);
 
      function ticked() {
@@ -173,7 +195,9 @@ console.log(data)
            .attr('r', ld50Radius);
      }
      
-     const forceGraph = () => {
+     // use svg.select here, jut have to figure out what to select
+     function forceGraph() {
+       svg.selectAll('#axis').remove();
        circles.call(force.drag());
        force.start();
      } 
@@ -216,20 +240,6 @@ console.log(data)
     // })
     
       
-    //   d3.csv('venomData.csv', function(data) {
-    // 
-    //     let graph = d3.select('body').append('svg')
-    //       .attr('width', 10000)
-    //       .attr('height', 10000)
-    // 
-    //     graph.selectAll('rect')
-    //          .data(data)
-    //          .enter()
-    //          .append('rect')
-    //          .attr('width', function(d) { return +d.ld50IV * 100 })
-    //          .attr('height', 18)
-    //          .attr('y', function(d, i) { return i * 50 })
-    //          .attr('fill', 'green');
     // 
     //     graph.selectAll('text')
     //          .data(data)
