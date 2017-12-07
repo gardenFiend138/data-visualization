@@ -9,8 +9,14 @@
 
   </head>
   <body>
-
+    <button id='graph'>Graph it</button>
+    <button id='converge'>Where's the data converge?</button>
+    <button id='force-graph'>BUBBLES!</button>
+    
     <script type="text/javascript">
+    
+
+    
     const margin = {top: 50,right: 100,bottom: 50, left: 100}
     const outerWidth = 1300;
     const outerHeight = 600;
@@ -25,8 +31,9 @@
       .style('padding', padding.right + padding.top)
       
     let g = svg.append('g')
-    // .style('padding', padding.right + padding.top)
       .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+      
+
     
     // using d3 scales allows us to keep our svg viewport within the browser window and scales our data to fit within the space
     // can be done manually with vanilla javascript, but it's not difficult math and is time consuming for a project with such a short timeline
@@ -34,12 +41,12 @@
     // this is handlign the math behind normalizing the data for scaling purposes
     const xScale = d3.scale
       .linear()
-      .domain([0, 16])
+      .domain([-2, 14])
       .range([0, 1000]);
       
     const yScale = d3.scale
       .linear()
-      .domain([0, 1000])
+      .domain([-100, 1200])
       .range([500, 0]); // invert values so it reads like a normal graph
     
     // with the radius, we invert the range so we have an inverse relationship between the ld50 of the venom and the radius of the circle
@@ -48,8 +55,6 @@
       .domain([.01, 1.0])
       .range([100, 1]);
     
-    // orient isn't working properly right now; possibly have to translate 
-    // svg element, since it's rotating orientation based on upper left corner (0,0); actually, just translate the 'g' element defined below
     const xAxis = d3.svg
       .axis()
       .orient('bottom')
@@ -61,52 +66,129 @@
       .scale(yScale);
     
     const xAxisGroup = g.append('g')
-      // .call(xAxis)
       .attr('transform', 'translate(0' + ',' + innerHeight + ')');
       
     const yAxisGroup = g.append('g')
-      // .call(yAxis)
-      // .attr('transform', 'translate(' + margin.top + ', 0)');
-      // 
+
+      
+      
+    // svg.append('circle')
+    //   .attr('r', 5)
+    //   .attr('cx', outerWidth / 2)
+    //   .attr('cy', outerHeight / 2)
+    //   .style('fill', 'none');
+    
+    const graph = {
+      nodes: [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}]
+    }
+    
+    const circle = svg.selectAll()
+      .data(graph.nodes)
+      .enter()
+      .append('circle')
+      
+              
     function render(data) {
       // using extent here to calculate min and max of the dataset
       // not needed due to defining the x, y, and r scales above
       // xScale.domain(d3.extent(data, function(d) { return d.fangsMM; }));
       // yScale.domain(d3.extent(data, function(d) { return d.venomYieldDryMG; }));
       // rScale.domain(d3.extent(data, function(d) { return d.ld50IV; }));
-
-    xAxisGroup.call(xAxis);
-    yAxisGroup.call(yAxis);
+console.log(data)
+    // xAxisGroup.call(xAxis);
+    // yAxisGroup.call(yAxis);
       
-    let circles = g.selectAll('circle').data(data);
+    const circles = svg.selectAll('circle');
+    
     const ld50Radius = function(d) { return rScale(d.ld50IV); }
-    circles.enter().append('circle');
+    
+    // circles.enter().append('circle');
+    
     circles 
-      .attr('cx', function(d) { return xScale(d.fangsMM); })
-      .attr('cy', function(d) { return yScale(d.venomYieldDryMG); })
-      .attr('r', 5)
+      // .attr('cx', function(d) { return xScale(d.fangsMM); })
+      // .attr('cy', function(d) { return yScale(d.venomYieldDryMG); })
+      .data(data)
+      .attr('r', ld50Radius)
+      .classed('node', true)
       .style('fill', 'blue')
       .style('opacity', .4)
       .style('stroke', 'black')
       .style('stroke-width', .3);
       
+      const nodes = data
+              
+      const shrinkCircles = () => {
+        circles.attr('r', 5)
+      };
       
-      let graph = svg.selectAll('text').data('text')
+      const growCircles = () => {
+        // xAxisGroup.call(xAxis);
+        // yAxisGroup.call(yAxis);
+        circles.attr('r', ld50Radius)
+          .attr('cx', function(d) { return xScale(d.fangsMM); })
+          .attr('cy', function(d) { return yScale(d.venomYieldDryMG); })
+      };
       
-      graph.data(data)
-           .enter()
-           .append('text')
-           .attr('fill', 'black')
-           .attr('y', function (d, i) { return i * 50 + 15 })
-           // .text( function(d) { return d.species });
+      const circleData = () => {
+        circles.attr('r', ld50Radius * 5)
+      }
+      
+      const graphIt = (data) => {
+        xAxisGroup.call(xAxis);
+        yAxisGroup.call(yAxis);
+        circles 
+          .attr('cx', function(d) { return xScale(d.fangsMM); })
+          .attr('cy', function(d) { return yScale(d.venomYieldDryMG); })
+          .attr('r', 5)
+      }
+      
 
-  
-  
+      
+      
+      // let graph = svg.selectAll('text').data('text')
+      // 
+      // graph.data(data)
+      //      .enter()
+      //      .append('text')
+      //      .attr('fill', 'black')
+      //      .attr('y', function (d, i) { return i * 50 + 15 })
+      //      .text( function(d) { return d.species });
+      
+      
+
+      
+
+
+     const force = d3.layout.force()
+               .nodes(nodes)
+               .charge(-600)
+               .alpha(.05)
+               .size([innerHeight, innerWidth])
+               .on('tick', ticked);
+
+     function ticked() {
+       circles
+           .attr('cx', d => d.x)
+           .attr('cy', d => d.y)
+           .attr('r', ld50Radius);
+     }
+     
+     const forceGraph = () => {
+       circles.call(force.drag());
+       force.start();
+     } 
+     
+     circles.call(force.drag());
+     force.start();
+     
+     document.getElementById('graph').addEventListener('click', graphIt, shrinkCircles )
+     document.getElementById('converge').addEventListener('click', growCircles)
+     document.getElementById('force-graph').addEventListener('click', forceGraph)
       
     //not needed in this visualization, since I'm using static data,
     // but putting in here so that I remember to use it when pulling from 
     // web APIs in the future
-    circles.exit().remove();
+    // circles.exit().remove();
     }
       
     // set measurements as numbers instead of strings 
@@ -119,6 +201,11 @@
       
       return d;
     }
+    
+
+    
+
+
     d3.csv('venomData.csv', type, render);
     // get the minimum and maximum values of ld50 column; used for circle size
     // look into d3.extent (only iterates over array once)

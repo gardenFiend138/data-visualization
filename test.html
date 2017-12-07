@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<svg width="960" height="500"></svg>
+<script src="https://d3js.org/d3.v3.min.js"></script>
+<script>
+const svg = d3.select('svg');
+
+const width = svg.attr('width');
+const height = svg.attr('height');
+
+// center marker
+svg.append('circle')
+    .attr('r', 5)
+    .attr('cx', width / 2)
+    .attr('cy', height / 2);
+
+const graph = {
+    nodes: [{}, {}, {}, {}, {}, {}]
+};
+console.log(graph.nodes)
+const node = svg.selectAll()
+        .data(graph.nodes)
+        .enter()
+        .append('circle')
+        .attr('r', 50)
+        .attr('fill', 'red')
+        .attr('stroke', 'black')
+        .attr('stroke-width', '5px');
+
+const force = d3.layout.force()
+          .nodes(graph.nodes)
+          .charge(-200)
+          .size([width, height])
+          .on('tick', ticked);
+
+function ticked() {
+  node
+      .attr('cx', d => d.x)
+      .attr('cy', d => d.y);
+}
+
+node.call(force.drag());
+force.start();
+</script>
