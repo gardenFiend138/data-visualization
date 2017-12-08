@@ -55,6 +55,12 @@ svg {
   margin-left: 0; */
 }
 
+.tooltip {
+  height: 50px;
+  width: 50px;
+  background-color: black;
+}
+
 /*.instructions {
   display: flex;
   width: 100vw;

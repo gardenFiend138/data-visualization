@@ -106,11 +106,16 @@
     const graph = {
       nodes: [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}]
     }
+    const tooltip = svg.append('g')
+    .attr('class', 'tooltip')
+    .style('display', 'none');
     
     const circle = g.selectAll()
       .data(graph.nodes)
       .enter()
       .append('circle')
+      
+      // console.log(data)
       
               
     function render(data) {
@@ -119,7 +124,7 @@
       // xScale.domain(d3.extent(data, function(d) { return d.fangsMM; }));
       // yScale.domain(d3.extent(data, function(d) { return d.venomYieldDryMG; }));
       // rScale.domain(d3.extent(data, function(d) { return d.ld50IV; }));
-console.log(data)
+// console.log(data)
     // xAxisGroup.call(xAxis);
     // yAxisGroup.call(yAxis);
       
@@ -127,9 +132,9 @@ console.log(data)
     
     const ld50Radius = function(d) { return rScale(d.ld50IV); }
     
+    // console.log(data);
     
-    
-    circles 
+    circles
       // .attr('cx', function(d) { return xScale(d.fangsMM); })
       // .attr('cy', function(d) { return yScale(d.venomYieldDryMG); })
       .data(data)
@@ -138,7 +143,25 @@ console.log(data)
       .style('fill', 'blue')
       .style('opacity', .4)
       .style('stroke', 'black')
-      .style('stroke-width', .3);
+      .style('stroke-width', .3)
+      .on('mouseover', function() { tooltip.style('display', 'block' );})
+      .on('mouseout', function() { tooltip.style('display', 'none' );})
+      .on('mousemove', function() { 
+        let xPos = d3.mouse(this)[0] - 15;
+        let yPos = d3.mouse(this)[1] - 15;
+        tooltip.attr('transform', 'translate(' + xPos + ',' + yPos + ')');
+        tooltip.select('text').text(function(d) { return d.commonName} );
+      });
+      
+        // console.log(data[0].commonName)
+      tooltip.append('text')
+        .data(data)
+        .attr('cx', 15)
+        .attr('cy', 15)
+        .text(data.commonName)
+        .style('font-size', '12px')
+      console.log(data)
+
               
       const shrinkCircles = () => {
         circles.attr('r', 5)
@@ -212,6 +235,7 @@ console.log(data)
       d.fangsMM = +d.fangsMM
       d.venomYieldDryMG = +d.venomYieldDryMG
       d.ld50IV = +d.ld50IV
+      d.species = d.species
       
       return d;
     }
