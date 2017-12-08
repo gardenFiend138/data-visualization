@@ -2,35 +2,52 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <link rel='stylesheet' type='text/css' href='reset.css'></link>
     <link rel='stylesheet' type='text/css' href='venomStyle.css'></link>
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Arimo" rel="stylesheet">
     <!-- using version 3 of d3 -->
     <script src="https://d3js.org/d3.v3.min.js"></script>
+    <script src="https://use.fontawesome.com/b64ad7832d.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="js/scripts.js"></script>
     <title>Venom LD-50 Visualization</title>
 
   </head>
   <body>
+    
+    <header>
+      
+      <div class='title-container'>
+        <h1>Venom at a Glance</h1>
+        <h3>
+          Using D3.js to Visualize Attributes of Venomous Animals
+        </h3>
+      </div>
+      
+      <div class='icons'>
+        <div>
+        <a href="https://github.com/gardenFiend138/data-visualization">
+          <i class="fa fa-github fa-3x" aria-hidden="true"></i>
+        </a>
+        <a href="https://www.linkedin.com/in/guy-wassather-678740b7">
+          <i class="fa fa-linkedin fa-3x" aria-hidden="true"></i>
+        </a>
+      </div>
+        <h5>Guy Wassather</h5>
+      </div>
+      
+    </header>
+    
     <div class='button-container'>
       <button id='graph'>Graph it</button>
       <button id='converge'>Where's the data converge?</button>
       <button id='force-graph'>BUBBLES!</button>
     </div>
     <!-- <img src="http://i.imgur.com/aCJQYUS.png" alt="snake-comic"> -->
-    <div class='instructions'>
-      <span>This is the instruction page div</span>
-    </div>
-    
+  
     <div class="graphs">
-      <!-- <div>
-        <svg></svg>
-      </div>
-      
-      <div>
-        <svg></svg>
-      </div> -->
-    </div>
-    
+        
     <script type="text/javascript">
     
     const margin = {top: 25,right: 100,bottom: 25, left: 100}
@@ -93,29 +110,20 @@
       
     const yAxisGroup = g.append('g').attr('class', 'axis')
     
-    
-
-      
-      
-    // svg.append('circle')
-    //   .attr('r', 5)
-    //   .attr('cx', outerWidth / 2)
-    //   .attr('cy', outerHeight / 2)
-    //   .style('fill', 'none');
-    
     const graph = {
       nodes: [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}]
     }
+    
     const tooltip = svg.append('g')
-    .attr('class', 'tooltip')
-    .style('display', 'none');
+      .attr('class', 'tooltip')
+      .style('display', null)
     
     const circle = g.selectAll()
       .data(graph.nodes)
       .enter()
       .append('circle')
       
-      // console.log(data)
+      console.log(graph.nodes)
       
               
     function render(data) {
@@ -134,7 +142,7 @@
     
     // console.log(data);
     
-    circles
+    svg.selectAll('circle')
       // .attr('cx', function(d) { return xScale(d.fangsMM); })
       // .attr('cy', function(d) { return yScale(d.venomYieldDryMG); })
       .data(data)
@@ -144,23 +152,28 @@
       .style('opacity', .4)
       .style('stroke', 'black')
       .style('stroke-width', .3)
-      .on('mouseover', function() { tooltip.style('display', 'block' );})
+      .on('mouseover', function() { 
+        tooltip.style('display', 'block' );
+        
+      })
       .on('mouseout', function() { tooltip.style('display', 'none' );})
-      .on('mousemove', function() { 
+      .on('mousemove', function(d) { 
         let xPos = d3.mouse(this)[0] - 15;
         let yPos = d3.mouse(this)[1] - 15;
         tooltip.attr('transform', 'translate(' + xPos + ',' + yPos + ')');
-        tooltip.select('text').text(function(d) { return d.commonName} );
-      });
+        tooltip.select('text')
+          .text(d.commonName + ': ' + d.species )
       
-        // console.log(data[0].commonName)
+
+      })
+      
+      
+      
       tooltip.append('text')
         .data(data)
         .attr('cx', 15)
         .attr('cy', 15)
-        .text(data.commonName)
         .style('font-size', '12px')
-      console.log(data)
 
               
       const shrinkCircles = () => {
@@ -243,6 +256,28 @@
     d3.csv('venomData.csv', type, render);
 
     </script>
+    
+    <div class='instructions'>
+      <!-- <button onclick='close()' type="close-button">&times;</button> -->
+      <p>
+        <span class='instructions-title'>What in tarnation am I looking at?!</span>
+      </br></br>
+        Hello and welcome! This is a visualization of various attributes of venomous snakes in relation to the toxicity of their venom. 
+      </br></br>
+        The toxicity of venom (LD-50) is measured as the mg/kg required to be fatal to 50% of the test population. In this visualization, the size of the circle represents the LD-50 of each venom.
+        <br/></br>
+        If you click the either 'graph' or 'data convergence' buttons, you will see the venoms graphed, with the X axis being the maximum fang length measured in MM, and the Y axis being the average venom yield (dried) measured in MG.
+        
+        
+      </p>
+    </div>
+    </div>
   </body>
+  <!-- <footer>
+    <div>
+      <i class="fa fa-github fa-3x" aria-hidden="true"></i>
+      <i class="fa fa-linkedin fa-3x" aria-hidden="true"></i>
+    </div>
+  </footer> -->
 </html>
 
