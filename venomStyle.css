@@ -3,6 +3,16 @@ html {
   flex-direction: column;
 }
 
+img {
+  width: 25%;
+  height: 25%;
+}
+
+.bubbles {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .button-container {
   display: flex;
   justify-content: center;

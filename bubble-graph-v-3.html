@@ -5,6 +5,8 @@
     <link rel='stylesheet' type='text/css' href='venomStyle.css'></link>
     <!-- using version 3 of d3 -->
     <script src="https://d3js.org/d3.v3.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="js/scripts.js"></script>
     <title>Venom LD-50 Visualization</title>
 
   </head>
@@ -14,25 +16,34 @@
       <button id='converge'>Where's the data converge?</button>
       <button id='force-graph'>BUBBLES!</button>
     </div>
+    <!-- <img src="http://i.imgur.com/aCJQYUS.png" alt="snake-comic"> -->
     <div class='instructions'>
-      <img src="http://i.imgur.com/aCJQYUS.png" alt="snake-comic">
       <span>This is the instruction page div</span>
+    </div>
+    
+    <div class="graphs">
+      <!-- <div>
+        <svg></svg>
+      </div>
+      
+      <div>
+        <svg></svg>
+      </div> -->
     </div>
     
     <script type="text/javascript">
     
-
-    
     const margin = {top: 25,right: 100,bottom: 25, left: 100}
-    const outerWidth = 1000;
-    const outerHeight = 500;
+    const outerWidth = 500;
+    const outerHeight = 250;
     const innerWidth =  outerWidth - margin.right - margin.left;
     const innerHeight = outerHeight - margin.top - margin.bottom - 20;
     const padding = margin;
     
     
     // dimensions of the svg viewport
-    let svg = d3.select('body').append('svg')
+    let svg = d3.select('.graphs').append('svg')
+      .attr('class', 'bubbles')
       .attr('width', outerWidth)
       .attr('height', outerHeight)
       .style('padding', padding.right + padding.top)
@@ -52,19 +63,19 @@
     const xScale = d3.scale
       .linear()
       .domain([0, 14])
-      .range([0, 1000]);
+      .range([0, outerWidth]);
       
     const yScale = d3.scale
       .linear()
       .domain([1, 1200])
-      .range([500, 0]); // invert values so it reads like a normal graph
+      .range([outerHeight, 0]); // invert values so it reads like a normal graph
       
     
     // with the radius, we invert the range so we have an inverse relationship between the ld50 of the venom and the radius of the circle
     const rScale = d3.scale
       .sqrt()
       .domain([.01, 1.0])
-      .range([100, 1]);
+      .range([50, 1]);
     
     const xAxis = d3.svg
       .axis()
@@ -77,10 +88,10 @@
       .scale(yScale);
     
     const xAxisGroup = g.append('g')
-      .attr('id', 'axis')
+      .attr('class', 'axis')
       .attr('transform', 'translate(0' + ',' + outerHeight + ')');
       
-    const yAxisGroup = g.append('g').attr('id', 'axis')
+    const yAxisGroup = g.append('g').attr('class', 'axis')
     
     
 
@@ -116,7 +127,7 @@ console.log(data)
     
     const ld50Radius = function(d) { return rScale(d.ld50IV); }
     
-    // circles.enter().append('circle');
+    
     
     circles 
       // .attr('cx', function(d) { return xScale(d.fangsMM); })
@@ -128,15 +139,12 @@ console.log(data)
       .style('opacity', .4)
       .style('stroke', 'black')
       .style('stroke-width', .3);
-      
-      const nodes = data
               
       const shrinkCircles = () => {
         circles.attr('r', 5)
       };
       
       const growCircles = () => {
-        // resetGElements();
         xAxisGroup.call(xAxis);
         yAxisGroup.call(yAxis);
         circles.attr('r', ld50Radius)
@@ -144,13 +152,12 @@ console.log(data)
           .attr('cy', function(d) { return yScale(d.venomYieldDryMG); })
       };
       
-      const circleData = () => {
-        circles.attr('r', ld50Radius)
-      }
+      // const circleData = () => {
+      //   circles.attr('r', ld50Radius)
+      // }
       
       const graphIt = (data) => {
         console.log(data)
-        // resetGElements();
         xAxisGroup.call(xAxis);
         yAxisGroup.call(yAxis);
         plotCircles();
@@ -160,29 +167,12 @@ console.log(data)
         circles 
           .attr('cx', function(d) { return xScale(d.fangsMM); })
           .attr('cy', function(d) { return yScale(d.venomYieldDryMG); })
-          .attr('r', 10)
+          .attr('r', 5)
       }
-      
-
-      
-      
-      // let graph = svg.selectAll('text').data('text')
-      // 
-      // graph.data(data)
-      //      .enter()
-      //      .append('text')
-      //      .attr('fill', 'black')
-      //      .attr('y', function (d, i) { return i * 50 + 15 })
-      //      .text( function(d) { return d.species });
-      
-      
-
-      
-
 
      const force = d3.layout.force()
-               .nodes(nodes)
-               .charge(-375)
+               .nodes(data)
+               .charge(-150)
                .friction(.9)
                .alpha(.5)
                .size([innerHeight * 2, innerWidth / 2])
@@ -195,9 +185,9 @@ console.log(data)
            .attr('r', ld50Radius);
      }
      
-     // use svg.select here, jut have to figure out what to select
      function forceGraph() {
-       svg.selectAll('#axis').remove();
+       $(".axis").html("");
+       // svg.selectAll('#axis').remove();
        circles.call(force.drag());
        force.start();
      } 
@@ -226,30 +216,8 @@ console.log(data)
       return d;
     }
     
-
-    
-
-
     d3.csv('venomData.csv', type, render);
-    // get the minimum and maximum values of ld50 column; used for circle size
-    // look into d3.extent (only iterates over array once)
-    // d3.csv('venomData.csv', type, function(data) {
-    //   let min = d3.min(data, function (d) { return d.ld50IV; })
-    //   let max = d3.max(data, function (d) { return d.ld50IV; })
-    //   console.log([min, max])
-    // })
-    
-      
-    // 
-    //     graph.selectAll('text')
-    //          .data(data)
-    //          .enter()
-    //          .append('text')
-    //          .attr('fill', 'black')
-    //          .attr('y', function (d, i) { return i * 50 + 15 })
-    //          .text( function(d) { return d.species });
-    // 
-    // });
+
     </script>
   </body>
 </html>
