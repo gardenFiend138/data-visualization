@@ -54,25 +54,22 @@ const yAxis = d3.svg
 
 const xAxisGroup = g.append('g')
   .attr('class', 'axis')
-  .attr('transform', 'translate(0' + ',' + outerHeight + ')');
+  .attr('transform', 'translate(0' + ',' + 300 + ')');
 
-const yAxisGroup = g.append('g').attr('class', 'axis')
+const yAxisGroup = g.append('g').attr('class', 'axis');
 
 const graph = {
   nodes: [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}]
-}
+};
 
 const tooltip = svg.append('g')
   .attr('class', 'tooltip')
-  .style('display', null)
+  .style('display', null);
 
 const circle = g.selectAll()
   .data(graph.nodes)
   .enter()
-  .append('circle')
-
-  console.log(graph.nodes)
-
+  .append('circle');
 
 function render(data) {
   // using extent here to calculate min and max of the dataset
@@ -86,7 +83,7 @@ function render(data) {
 
 const circles = svg.selectAll('circle');
 
-const ld50Radius = function(d) { return rScale(d.ld50IV); }
+const ld50Radius = function(d) { return rScale(d.ld50IV); };
 
 // console.log(data);
 
@@ -111,7 +108,7 @@ svg.selectAll('circle')
     tooltip.attr('transform', 'translate(' + xPos + ',' + yPos + ')');
     tooltip.select('text')
       .text(d.commonName + ': ' + d.species )
-  })
+  });
 
 
 
@@ -119,12 +116,12 @@ svg.selectAll('circle')
     .data(data)
     .attr('cx', 15)
     .attr('cy', 15)
-    .style('font-size', '12px')
+    .style('font-size', '12px');
 
 
 
   const shrinkCircles = () => {
-    circles.attr('r', 5)
+    circles.attr('r', 5);
   };
 
   const growCircles = () => {
@@ -132,7 +129,7 @@ svg.selectAll('circle')
     yAxisGroup.call(yAxis);
     circles.attr('r', ld50Radius)
       .attr('cx', function(d) { return xScale(d.fangsMM); })
-      .attr('cy', function(d) { return yScale(d.venomYieldDryMG); })
+      .attr('cy', function(d) { return yScale(d.venomYieldDryMG); });
   };
 
   // const circleData = () => {
@@ -140,18 +137,17 @@ svg.selectAll('circle')
   // }
 
   const graphIt = (data) => {
-    console.log(data)
     xAxisGroup.call(xAxis);
     yAxisGroup.call(yAxis);
     plotCircles();
-  }
+  };
 
   const plotCircles = () => {
     circles
       .attr('cx', function(d) { return xScale(d.fangsMM); })
       .attr('cy', function(d) { return yScale(d.venomYieldDryMG); })
-      .attr('r', 5)
-  }
+      .attr('r', 5);
+  };
 
  const force = d3.layout.force()
            .nodes(data)
@@ -170,7 +166,6 @@ svg.selectAll('circle')
 
  function forceGraph() {
    $(".axis").html("");
-   // svg.selectAll('#axis').remove();
    circles.call(force.drag());
    force.start();
  }
@@ -178,9 +173,10 @@ svg.selectAll('circle')
  circles.call(force.drag());
  force.start();
 
- document.getElementById('graph').addEventListener('click', graphIt, shrinkCircles )
- document.getElementById('converge').addEventListener('click', growCircles)
- document.getElementById('force-graph').addEventListener('click', forceGraph)
+ document.getElementById('graph')
+         .addEventListener('click', graphIt, shrinkCircles);
+ document.getElementById('converge').addEventListener('click', growCircles);
+ document.getElementById('force-graph').addEventListener('click', forceGraph);
 
 //not needed in this visualization, since I'm using static data,
 // but putting in here so that I remember to use it when pulling from
@@ -190,12 +186,12 @@ svg.selectAll('circle')
 
 // set measurements as numbers instead of strings
 function type(d) {
-  d.lengthCM = +d.lengthCM
-  d.weightG = +d.weightG
-  d.fangsMM = +d.fangsMM
-  d.venomYieldDryMG = +d.venomYieldDryMG
-  d.ld50IV = +d.ld50IV
-  d.species = d.species
+  d.lengthCM = Number(d.lengthCM);
+  d.weightG = Number(d.weightG);
+  d.fangsMM = Number(d.fangsMM);
+  d.venomYieldDryMG = Number(d.venomYieldDryMG);
+  d.ld50IV = Number(d.ld50IV);
+  d.species = d.species;
 
   return d;
 }
