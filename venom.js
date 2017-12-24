@@ -52,11 +52,20 @@ const yAxis = d3.svg
   .orient('left')
   .scale(yScale);
 
+  const yAxisExtend = d3.svg
+  .axis()
+  .orient('left')
+
+
 const xAxisGroup = g.append('g')
   .attr('class', 'axis')
   .attr('transform', 'translate(0' + ',' + 300 + ')');
 
 const yAxisGroup = g.append('g').attr('class', 'axis');
+
+// work on getting this visible to extend the y-axis
+const yAxisExtendGroup = g.append('g').attr('class', 'axis')
+  .attr('transform', 'translate(' + 20 + ', 0)');
 
 const graph = {
   nodes: [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}]
