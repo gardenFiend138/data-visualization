@@ -8,7 +8,7 @@ svg {
 }
 
 .fa {
-  padding: 0 20px;  
+  padding: 0 20px;
 }
 
 .fa:hover {
@@ -46,7 +46,7 @@ header {
   align-items: center;
   justify-content: flex-end;
   flex-direction: column;
-  
+
 }
 
 footer {
@@ -55,7 +55,7 @@ footer {
   width: 100%;
   margin: 0;
   padding: 0;
-  
+
   position: fixed;
   height: 50px;
   opacity: .8;
@@ -107,6 +107,7 @@ button:active {
 
 button:focus {
   outline: 0;
+  box-shadow: 0px 1px 5px black;
 }
 
 svg {
@@ -116,7 +117,7 @@ svg {
   margin-left: 0; */
 }
 
-tooltip {
+.tooltip-showing {
   height: 500px;
   width: 500px;
   border: 1px solid black;
@@ -124,10 +125,15 @@ tooltip {
   display: block;
 }
 
+.tooltip-hidden {
+  display: none;
+}
+
 .instructions-title {
   font-size: 18px;
   font-weight: bold;
 }
+
 
 /*.instructions {
   display: flex;
@@ -136,4 +142,3 @@ tooltip {
   background-color: black;
   border-radius: 2000px;
 }*/
-
